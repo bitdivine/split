@@ -29,6 +29,12 @@ Valid options:
 * maxLength - The maximum buffer length without seeing a newline or `matcher`,
   if a single line exceeds this, the split stream will emit an error.
 
+* mapErrorEvent - The name of the event emitted if the mapper returns an error.
+
+  Default:    "error" (which also terminates the stream)
+
+  Convention: "maperror" (allows you to handle the error without terminating the stream)
+
 ``` js
   split(JSON.parse, null, { maxLength: 2})
 ```
