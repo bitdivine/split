@@ -29,6 +29,10 @@ Valid options:
 * maxLength - The maximum buffer length without seeing a newline or `matcher`,
   if a single line exceeds this, the split stream will emit an error.
 
+``` js
+  split(JSON.parse, null, { maxLength: 2})
+```
+
 * mapErrorEvent - The name of the event emitted if the mapper returns an error.
 
   Default:    "error" (which also terminates the stream)
@@ -36,8 +40,14 @@ Valid options:
   Convention: "maperror" (allows you to handle the error without terminating the stream)
 
 ``` js
-  split(JSON.parse, null, { maxLength: 2})
+  fs.createReadStream(file)
+  .pipe(split(JSON.parse, null, { mapErrorEvent: "maperror"}))
+  .on("data",     function(s){console.log("Valid line");})
+  .on("maperror", function(s){console.log("Skipping malformed line");})
+  .on("error",    function(s){console.log("Uh oh.  Something else went wrong.");})
+  .on("end",      function(s){console.log("Champers");});
 ```
+
 
 # NDJ - Newline Delimited Json
 
