@@ -16,6 +16,7 @@ function split (matcher, mapper, options) {
   var decoder = new Decoder()
   var soFar = ''
   var maxLength = options && options.maxLength;
+  var mapErrorEvent = options && options.mapErrorEvent || 'error';
   if('function' === typeof matcher)
     mapper = matcher, matcher = null
   if (!matcher)
@@ -27,7 +28,7 @@ function split (matcher, mapper, options) {
         piece = mapper(piece)
       }
       catch (err) {
-        return stream.emit('error', err)
+        return stream.emit(mapErrorEvent, err)
       }
       if('undefined' !== typeof piece)
         stream.queue(piece)
